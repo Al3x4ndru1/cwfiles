@@ -1,8 +1,5 @@
 package adp.cw2122.Model;
 
-import adp.cw2122.Controller.doDownloads;
-import adp.cw2122.View.Downloader;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import static adp.cw2122.View.Downloader.showImage;
 
