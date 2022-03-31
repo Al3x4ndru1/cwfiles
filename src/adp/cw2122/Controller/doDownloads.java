@@ -1,8 +1,6 @@
 package adp.cw2122.Controller;
 
 import adp.cw2122.Model.doDownload;
-import adp.cw2122.View.Downloader;
-
 import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -13,7 +11,6 @@ public class doDownloads {
     private final List<JProgressBar> bars;
     private static Thread[] t;
     private static final ArrayList<ArrayList<Byte>> byteList = new ArrayList<>();
-    protected Downloader frame;
 
     //get the infromation form the Downloader and call the doDownloadersmethod
     public doDownloads(File[] downloads, List<JProgressBar> bars) {
@@ -28,7 +25,7 @@ public class doDownloads {
         for (int i = 0; i < downloads.length; i++) {
             ArrayList<Byte> bytes = new ArrayList<>(1024);
             byteList.add(bytes);
-            doDownload r = new doDownload(bars.get(i), bytes, downloads[i], frame);
+            doDownload r = new doDownload(bars.get(i), bytes, downloads[i]);
             t[i] = new Thread(r);
             t[i].start();
         }
@@ -40,7 +37,7 @@ public class doDownloads {
     }
 
     //interrupt the thread and after rejoin them
-    public static synchronized void cancel(int i) {
+    public static void cancel(int i) {
         t[i].interrupt();
         try {
             t[i].join();
@@ -49,7 +46,7 @@ public class doDownloads {
     }
 
     //interrupt all the threads before closing the GUI application
-    public static synchronized void cancelall() {
+    public static void cancelall() {
         for (int i = 0; i < downloads.length; i++) {
             t[i].interrupt();
             try {

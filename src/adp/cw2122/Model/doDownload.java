@@ -21,28 +21,26 @@ public class doDownload extends Component implements Runnable{
     private final JProgressBar bar;
     private final ArrayList<Byte> bytes;
     private final File downloads;
-    protected static Downloader frame;
 
-    public doDownload(JProgressBar bar, ArrayList<Byte> bytes,File downloads,Downloader frame) {
+    public doDownload(JProgressBar bar, ArrayList<Byte> bytes,File downloads) {
         this.downloads=downloads;
         this.bar=bar;
         this.bytes=bytes;
-        frame=frame;
 
     }
 
     //show the image
-    public synchronized static void show(File downloads ,byte[] bytess){
+    public void show(File downloads ,byte[] bytess){
         try {
             final BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytess));
             showImage(image, downloads.getPath());
         } catch (IOException e) {
-           JOptionPane.showMessageDialog(frame,"Don t have any data","Error message",JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(this,"Don t have any data","Error message",JOptionPane.ERROR_MESSAGE);
         }
     }
 
 //update the bar progress in its own therad
-    private synchronized void updateProgress() {
+    private void updateProgress() {
         bar.setValue(bytes.size());
     }
 
@@ -70,7 +68,7 @@ public class doDownload extends Component implements Runnable{
             }
 
         } catch (final IOException e) {
-            new Thread(() -> JOptionPane.showMessageDialog(frame,"Unable to find the file","Error message",JOptionPane.ERROR_MESSAGE)).start();
+            new Thread(() -> JOptionPane.showMessageDialog(this,"Unable to find the file","Error message",JOptionPane.ERROR_MESSAGE)).start();
         }
         //this will be executed at the end
         finally {
