@@ -20,8 +20,6 @@ public class Downloader extends JFrame implements WindowListener {
 
   private  final File[] downloads;
   private final List<JProgressBar> bars;
-  private Thread win;
-
 
   public Downloader(final File[] downloads) {
 
@@ -42,8 +40,7 @@ public class Downloader extends JFrame implements WindowListener {
       cancelButton.addActionListener((ev)-> new Thread(()-> new doCancel(j)).start()); //create a thread for doCancel cancel the j thread
       border.add(cancelButton, BorderLayout.EAST);
       progPanel.add(border);
-      win = new Thread(()-> addWindowListener(this));
-      win.start();
+      addWindowListener(this);
     }
 
     final JPanel mainPanel = new JPanel(new BorderLayout());
@@ -59,6 +56,29 @@ public class Downloader extends JFrame implements WindowListener {
     setVisible(true);
   }
 
+  @Override
+  public void windowOpened(WindowEvent windowEvent) {}
+
+  @Override
+  public void windowClosing(WindowEvent windowEvent) {
+    doCancel.cancelall();
+  }
+
+  @Override
+  public void windowClosed(WindowEvent windowEvent) {}
+
+  @Override
+  public void windowIconified(WindowEvent windowEvent) {}
+
+  @Override
+  public void windowDeiconified(WindowEvent windowEvent) {}
+
+  @Override
+  public void windowActivated(WindowEvent windowEvent) {}
+
+  @Override
+  public void windowDeactivated(WindowEvent windowEvent) {}
+
 //this will show the Image
   public synchronized static void showImage(final BufferedImage image, final String name) {
     final JFrame iw = new JFrame(name);
@@ -68,36 +88,6 @@ public class Downloader extends JFrame implements WindowListener {
     iw.add(ip);
     iw.pack();
     iw.setVisible(true);
-  }
-
-  @Override
-  public void windowOpened(WindowEvent windowEvent) {
-  }
-
-  @Override
-  public void windowClosing(WindowEvent windowEvent) {
-    doCancel.cancelall();
-    win.interrupt();
-  }
-
-  @Override
-  public void windowClosed(WindowEvent windowEvent) {
-  }
-
-  @Override
-  public void windowIconified(WindowEvent windowEvent) {
-  }
-
-  @Override
-  public void windowDeiconified(WindowEvent windowEvent) {
-  }
-
-  @Override
-  public void windowActivated(WindowEvent windowEvent) {
-  }
-
-  @Override
-  public void windowDeactivated(WindowEvent windowEvent) {
   }
 
   //the Blueprint of how to show the image
@@ -115,7 +105,7 @@ public class Downloader extends JFrame implements WindowListener {
   }
 
   //is called by the main and start in the SwinUtilities.invokeLater thread, the GUI thread
-  public synchronized static void launch() {
+  public static void launch() {
     final String[] names = new String[] { "images/pyramids.jpg", "images/pagodas.jpg", "images/bug.jpg" };
     final File[] downloads = new File[names.length];
     for (int i = 0; i < downloads.length; i++) {

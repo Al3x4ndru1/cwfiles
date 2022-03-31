@@ -37,7 +37,7 @@ public class doDownload extends Component implements Runnable{
             final BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytess));
             showImage(image, downloads.getPath());
         } catch (IOException e) {
-           new Thread(() -> JOptionPane.showMessageDialog(frame,"Don t have any data","Error message",JOptionPane.ERROR_MESSAGE)).start();
+           JOptionPane.showMessageDialog(frame,"Don t have any data","Error message",JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -62,7 +62,7 @@ public class doDownload extends Component implements Runnable{
                     break;
                 } else {
                     bytes.add((byte) read);
-                    new Thread(() -> updateProgress()).start();
+                    SwingUtilities.invokeLater(()-> updateProgress());
                     if ((bytes.size() % 1000) == 0) {
                         System.out.println(bytes.size() + " bytes read");
                     }
@@ -78,7 +78,7 @@ public class doDownload extends Component implements Runnable{
             for (int j = 0; j < bytes.size(); j++) {
                 byteraw[j] = bytes.get(j);
             }
-            show(downloads,byteraw);
+            SwingUtilities.invokeLater(()->show(downloads,byteraw));
         }
         System.out.println(this.downloads + " DONE");
     }

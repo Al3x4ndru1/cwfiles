@@ -26,7 +26,7 @@ public class doDownloads {
     private synchronized void doDownloadsmethod() {
         t = new Thread[downloads.length];
         for (int i = 0; i < downloads.length; i++) {
-            ArrayList<Byte> bytes=new ArrayList<>(1024);
+            ArrayList<Byte> bytes = new ArrayList<>(1024);
             byteList.add(bytes);
             doDownload r = new doDownload(bars.get(i), bytes, downloads[i], frame);
             t[i] = new Thread(r);
